@@ -12,8 +12,8 @@ using interviewer.Data;
 namespace interviewer.Migrations
 {
     [DbContext(typeof(InterviewerDbContext))]
-    [Migration("20230831043637_UpdateRoles")]
-    partial class UpdateRoles
+    [Migration("20230904033056_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,11 +25,10 @@ namespace interviewer.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -55,28 +54,28 @@ namespace interviewer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("ce0156f1-1293-4e99-b1f3-4f3cc84713da"),
-                            ConcurrencyStamp = "4c385851-d18f-4626-91f4-5b8244d0e47c",
+                            Id = "46e00514-0e07-41da-a30f-225a262c97a7",
+                            ConcurrencyStamp = "f53ceaeb-a692-4b7a-ab4d-32c0a8a60efa",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = new Guid("1ff75dee-9346-43fa-a975-1f561a7deab2"),
-                            ConcurrencyStamp = "12e74a3c-9833-44b9-aa94-770325aae6f7",
+                            Id = "87dcc9dd-ddb8-4d05-83bc-82cfe62b019f",
+                            ConcurrencyStamp = "63f46139-939b-49d6-a159-5594d14a67cf",
                             Name = "Interviewer",
                             NormalizedName = "INTERVIEWER"
                         },
                         new
                         {
-                            Id = new Guid("b63f7c2d-4172-4016-8a1a-f594f621e9c1"),
-                            ConcurrencyStamp = "25c7af36-d867-4b5b-b0e2-477a45d30b34",
+                            Id = "123e1f3b-df90-481b-9888-cbc701878782",
+                            ConcurrencyStamp = "605017f2-d995-4cdf-91b7-b6de11a02b95",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -90,8 +89,9 @@ namespace interviewer.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -100,7 +100,7 @@ namespace interviewer.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -114,8 +114,9 @@ namespace interviewer.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -124,7 +125,7 @@ namespace interviewer.Migrations
                     b.ToTable("AspNetUserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -135,8 +136,9 @@ namespace interviewer.Migrations
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -145,13 +147,13 @@ namespace interviewer.Migrations
                     b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -160,10 +162,10 @@ namespace interviewer.Migrations
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -179,11 +181,38 @@ namespace interviewer.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("interviewer.Data.Comment", b =>
+                {
+                    b.Property<string>("StudentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("DepId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("InterviewerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Time")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("StudentId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("interviewer.Data.Interviewer", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Department")
                         .HasColumnType("int");
@@ -197,26 +226,10 @@ namespace interviewer.Migrations
                     b.ToTable("Interviewers");
                 });
 
-            modelBuilder.Entity("interviewer.Data.InterviewerAccount", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("InterviewerAccounts");
-                });
-
             modelBuilder.Entity("interviewer.Data.InterviewerUser", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -280,9 +293,9 @@ namespace interviewer.Migrations
 
             modelBuilder.Entity("interviewer.Data.Student", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("College")
                         .IsRequired()
@@ -333,7 +346,7 @@ namespace interviewer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("edaeddc0-f7bd-4456-913d-deba5b33c456"),
+                            Id = "68ddd41e-0b37-483a-ac01-637d9ad31184",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -346,7 +359,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("cecdb11e-9512-48d3-b05b-36d2b71e31e2"),
+                            Id = "8e8e8907-609a-49cd-bb86-4a199c237a6e",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -359,7 +372,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("0b064738-e640-4836-b533-4bf5977f7d26"),
+                            Id = "dbaeeeef-7f2b-494d-a6db-24589ca032ab",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -372,7 +385,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("6fcd63de-e9b0-40f1-bc72-a07a2eb7c353"),
+                            Id = "83e882b1-e56a-4274-8092-e98173fa8f37",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -385,7 +398,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("3fd1bd24-adda-41b8-a149-920e3790ba6d"),
+                            Id = "654e0f39-8ee0-4af4-b7ff-80c413b81ceb",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -398,7 +411,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("12b0f689-a47a-40f1-818a-a63f1e22ce66"),
+                            Id = "22b8334f-1e98-4597-8f9f-1ac71c081735",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -411,7 +424,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("0bce99b9-ebcd-4c88-8b09-e75e7ff02084"),
+                            Id = "53944bed-13d7-477d-b39c-f3518867026e",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -424,7 +437,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("12ccbe4f-eecc-41b5-875a-e728ead133e1"),
+                            Id = "630eba5e-39ad-4a98-9407-f9b9d626ce35",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -437,7 +450,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("6e20aac2-24b4-4018-9033-d886c85ad33f"),
+                            Id = "223a65a7-ff08-4ad7-910a-1f5b555ced3c",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -450,7 +463,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("6990c9e4-43b6-48d0-83f3-027b9e069f15"),
+                            Id = "c1fec9e3-4f28-4d33-be4a-f62a9eec68c3",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -463,7 +476,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("40e911ea-1815-4df7-b6d3-f666f0a9604a"),
+                            Id = "7262b128-640d-4fe9-a2a1-aba76614b54a",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -476,7 +489,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("55f5987b-fb5a-4674-b077-a1d82c37eda4"),
+                            Id = "74bc7e0f-747f-4a43-81ed-dd82d6ea1fd6",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -489,7 +502,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("e6c78b16-17cf-4d98-a97c-adabf9de7eb7"),
+                            Id = "667efea3-4429-488b-8f90-a9e5dec47ed9",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -502,7 +515,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("3c060deb-1278-418b-854e-8e602371d35d"),
+                            Id = "ac74cb67-de19-47e4-9660-08e70e7219fc",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -515,7 +528,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("fc9d5405-f9f7-47e3-9a8e-19f4c812da25"),
+                            Id = "3720bdc2-1b34-4612-af08-c8913679ad46",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -528,7 +541,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("21ff3d77-627e-418f-90d8-f118cc4cd80d"),
+                            Id = "16d1ab7e-1447-47ef-a993-bf101de80793",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -541,7 +554,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("6d28e9c6-47b6-4d54-b90b-482f99bce79c"),
+                            Id = "5d2c77b3-1e91-4687-9fae-8fd6bb4cd0b5",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -554,7 +567,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("cdeab141-92d0-4d49-924f-a6259e1cc4e4"),
+                            Id = "69b2ace4-5958-4462-bd42-8269db67c0f1",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -567,7 +580,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("e9738cde-9ef8-4d9f-a964-4024be2b7bee"),
+                            Id = "1482e87e-667c-41ce-b020-16137d078ab0",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -580,7 +593,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("aa4f0d31-6a76-4b3d-b3ac-1ca66ee84ce5"),
+                            Id = "c9f667ec-5ede-4462-903f-1a63c28a4ad0",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -593,7 +606,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("8613f4ff-c997-45f0-a39c-03d461f0b84d"),
+                            Id = "ad2516e4-811d-49ab-88a6-b7d172c8118a",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -606,7 +619,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("853ff7b7-cfe8-4d41-80e9-39f23f71f247"),
+                            Id = "6bd88aee-0c32-4e41-b47e-3a54d584faa7",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -619,7 +632,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("ce90517b-b198-49b9-8262-740366f5cda0"),
+                            Id = "d1c243a4-83f8-4152-9075-6f809b2a0580",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -632,7 +645,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("454eb92d-9a6a-4de2-832c-c8cb859d902b"),
+                            Id = "d3b9836d-59af-4ec5-b7bf-328b79229d5d",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -645,7 +658,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("92778e71-9698-491f-8a7c-715fda753b68"),
+                            Id = "2f199706-280b-465a-88a8-061b404d5669",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -658,7 +671,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("838a19ec-f872-4f49-8ba0-e719dfc66898"),
+                            Id = "4e026a46-fa66-4c68-b9d2-40826930170c",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -671,7 +684,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("193c011e-39c7-4113-9077-8d73d7761a31"),
+                            Id = "c071cee5-5b80-4876-a3d0-6605e1090382",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -684,7 +697,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("58bc228a-bc04-432c-b1a8-b0532d20c22b"),
+                            Id = "49c4240d-3b52-4d9c-9d8f-12290aa5491e",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -697,7 +710,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("3922fe2f-1949-4431-ba7a-55d778e94b83"),
+                            Id = "7374220c-5109-49e2-bfa1-0c4cdb6960e7",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -710,7 +723,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("cc60d8f1-ed4b-42de-ae1b-d9d8b860cd19"),
+                            Id = "1fc6b8c8-fc68-4add-b36b-ac2b0ecc1ec2",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -723,7 +736,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("7e4ebea1-ec9c-4388-baa2-9439b457db95"),
+                            Id = "c9a0531c-60e9-48c3-bb10-90ef2d1ec45f",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -736,7 +749,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("f7a86267-ccc3-467b-9c58-55f6d4fc472b"),
+                            Id = "98f52159-2a41-4372-b7cd-003b464ebf97",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -749,7 +762,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("ec5a826f-d899-4e94-aa67-8dc3a28be275"),
+                            Id = "44e8c7fc-04ed-4e98-90d1-e6b869123485",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -762,7 +775,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("ca76dc0e-432e-42b1-b676-d2208464aed3"),
+                            Id = "39f02c2c-abfe-4a42-89d2-2fd582c41ecf",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -775,7 +788,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("86c28181-79e0-47ec-9d38-481eef0c05d1"),
+                            Id = "0f692f32-3e52-431e-a448-923649648ca8",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -788,7 +801,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d6828423-4610-4ebe-908c-e76f4c6adf46"),
+                            Id = "dc263940-1ac8-45f4-b6ba-aa35b946caf1",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -801,7 +814,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("1beeae0e-cf89-4c65-bd3f-a06232d66954"),
+                            Id = "cc5de8ed-300c-4a26-bd0e-0e45b81ef0b1",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -814,7 +827,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("14417579-7fba-4052-9fa1-1910b3d62a56"),
+                            Id = "5a22fbf0-8949-4cba-8242-1794013a48d1",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -827,7 +840,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("fbb26032-a4b0-48ad-8858-41efe0c87279"),
+                            Id = "e7a6a668-4f2d-44a4-b807-aaf9d49983a4",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -840,7 +853,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("24a2b3db-00ee-4296-9f3c-384c9b01ca59"),
+                            Id = "4a96c055-a59e-4896-8eaa-59235d8f29ad",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -853,7 +866,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("28a7995e-db42-47b9-a648-de8ae33c051a"),
+                            Id = "cb6c5ca1-acdd-4414-9332-67916aa6940d",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -866,7 +879,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("6f28e6ae-fd40-4985-92b8-bdfd521845d6"),
+                            Id = "416e4f88-5ef7-4668-853c-1c4b584c68a0",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -879,7 +892,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("7b59cd00-7021-428c-b99e-d08af8ec6409"),
+                            Id = "8bf4391b-6e72-4a43-955e-cc965727660d",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -892,7 +905,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("1f18f0f2-7a8b-44af-9ff9-2485d320ee12"),
+                            Id = "b9dd7d49-d326-4688-bf9b-969cab3ed630",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -905,7 +918,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("40615c66-76b1-45a7-9970-b85841ae9d24"),
+                            Id = "e7313c2b-195a-4c17-bdcc-fe4a4609ed41",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -918,7 +931,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("907237ec-2291-4644-9870-4aed96f6fe16"),
+                            Id = "b8368f83-eed7-48ca-bb00-eeb84919fd3f",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -931,7 +944,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d353ea4d-211e-4113-bd2c-be33dadf25ed"),
+                            Id = "0942e729-6c53-42ed-87ba-308974514e47",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -944,7 +957,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("e5b70da9-5713-4858-84ef-ec233b21ade1"),
+                            Id = "aa085920-f419-412a-a426-9c7ef3e27a2b",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -957,7 +970,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("051bb7b7-c3d0-49ba-8c5b-2a06b1f5f2d8"),
+                            Id = "c48d73b4-9972-43ec-bca5-b257aa22e098",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -970,7 +983,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("5d3d03b5-06bd-49e6-ac16-8f9671ee238c"),
+                            Id = "19e996e6-0425-4d14-96a1-fe522505c34c",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -983,7 +996,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("8d200d64-bea7-444a-92b7-f00e7a9e78ac"),
+                            Id = "0bf4ca9f-a09c-405a-9149-99c76db9d3e2",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -996,7 +1009,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("371c2eb0-52b8-4979-ab7f-d92e131b09ed"),
+                            Id = "bb189769-1aad-4b49-9e16-5348a188a8a1",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -1009,7 +1022,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("b84b7b18-41a2-4013-9773-6cf32f5a1244"),
+                            Id = "b7bcbe22-adb1-4f36-8db7-f20fbbf34cc8",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -1022,7 +1035,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("dc814079-4ad6-490c-bb49-3ca539a23eeb"),
+                            Id = "07adf955-4631-4657-8d16-68b962274ef0",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -1035,7 +1048,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("e9f52f7f-03de-4689-954d-3c20485e594c"),
+                            Id = "e99fd37c-a5c8-4cd6-acd2-e8cd109f5173",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -1048,7 +1061,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("852757eb-233f-4820-ace0-a5d206fc61fd"),
+                            Id = "396a3229-3f33-4785-b91a-a8551b64ebfc",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -1061,7 +1074,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("c84a7e71-8fa7-443d-a81a-dbd5d113ef81"),
+                            Id = "68aff82f-45b6-4d03-aa4e-b442884ce08b",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -1074,7 +1087,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("3c58f026-cf60-4c14-9596-f6c00c3b1503"),
+                            Id = "16226bd7-c664-493b-a8af-9f4db1eac528",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -1087,7 +1100,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("f54c4812-1c3f-4538-8ec0-8bfd65a01e12"),
+                            Id = "e701e1ff-5cda-4b49-9aa6-ff079ccc4b6b",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -1100,7 +1113,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("9d7c1f76-601f-4fa5-ae87-099be7db13a4"),
+                            Id = "89dbddcb-c436-4dae-a23c-d192b8e7d8e8",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -1113,7 +1126,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("b75d8743-8f80-4789-900c-2621f01aeab7"),
+                            Id = "fdadd46b-15c2-4f26-92e9-a8c70df728dd",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -1126,7 +1139,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("6343d11f-89c5-4da0-b6f2-b9bc36d49b95"),
+                            Id = "8da8bb4e-cee6-4abc-a65f-bdc51bf99b07",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -1139,7 +1152,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("3f92efa2-6b4e-4c4d-a0cb-1204adf6cdad"),
+                            Id = "27307c20-a25e-44c5-be24-3b6e4c4085d8",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -1152,7 +1165,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("54a9decf-a0d5-4d94-916a-c385e725ff20"),
+                            Id = "61f57a02-f465-4f1f-8ce6-8d3c54804c7b",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -1165,7 +1178,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("b373615d-dceb-4e37-9229-33d52a17bcc5"),
+                            Id = "768bfd56-3f62-4b38-8608-4d947bd955db",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -1178,7 +1191,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("be1658ed-3370-4e23-bc0d-20db98d45b99"),
+                            Id = "5fd18f66-2751-4ccf-90c9-72175bbdc41a",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -1191,7 +1204,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("a8e4d2fa-f33b-4f55-9d69-4c3854fa827d"),
+                            Id = "8a1a5631-69af-4d33-8392-5dca1817de0d",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -1204,7 +1217,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("c048fcc7-7056-444f-ab91-9198c621be98"),
+                            Id = "302dd18c-8bc1-4418-864c-48f52874a1c6",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -1217,7 +1230,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("5c521ce3-19bd-4ca0-a022-908d5756690f"),
+                            Id = "b7b92175-c0e4-4da3-8a8e-aeb7764d324d",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -1230,7 +1243,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("c3517b6c-0aa1-4a6e-81e8-316b182038f0"),
+                            Id = "5b5dc131-7668-4266-816d-0f1aa2dbf0a9",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -1243,7 +1256,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("b8cce48e-90e2-4518-861f-6953f6d82680"),
+                            Id = "9139f210-c52d-45b7-b751-7d0b07121b26",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -1256,7 +1269,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d60b1ec5-778e-4064-a36f-0e31dbec1ea4"),
+                            Id = "460a9475-e473-46cc-a32e-26deada50ad3",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -1269,7 +1282,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("9bffe19d-6d51-46a1-8d17-853499df6e3e"),
+                            Id = "842abba3-a355-49c9-b39c-b038d73683b3",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -1282,7 +1295,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("b1ed936b-d896-4f44-87c2-f36f460a0066"),
+                            Id = "3471166f-f296-4ef5-a1c8-ec1bc14c73ba",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -1295,7 +1308,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("b67e3cfd-c739-44a3-85d2-2bb9ea0503ef"),
+                            Id = "32836baf-0bc0-4a33-9924-d2bf28d57151",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -1308,7 +1321,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("0a71e2a0-d6fd-499f-9c4f-689a504f4762"),
+                            Id = "72f8570f-4a39-4511-b703-604bbac6a8f6",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -1321,7 +1334,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("a1643251-93c4-4ec7-b230-15ad00017d79"),
+                            Id = "b2786cc4-3d49-454c-84f8-4e7e40e7f80e",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -1334,7 +1347,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("89f2e417-5724-45c2-a4c5-248556bdc134"),
+                            Id = "1af7effb-1d8e-4e45-b67a-bf3782ed82d9",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -1347,7 +1360,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("6b15c18f-f2b8-4b5c-b0aa-08543ce40fa4"),
+                            Id = "bf51feed-650c-46df-832f-39127eb27075",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -1360,7 +1373,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("917eb1d2-6135-4869-bdc0-95b0ca5d439c"),
+                            Id = "511b36f5-01da-4e06-97d2-5bf99d6f4fb8",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -1373,7 +1386,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("cdf13dc1-573d-42a5-8483-8a13f502108c"),
+                            Id = "6cb1e10e-3260-4392-af02-f9b188bb1ee9",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -1386,7 +1399,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d994adbd-e346-4746-a5b0-a00a213931e1"),
+                            Id = "259c8ed6-283f-4f9f-a802-cb847cc7d389",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -1399,7 +1412,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("5100f01a-7fb8-4b3d-b1bb-97022c2079fa"),
+                            Id = "233d9d24-9de4-47da-a5a7-f119c0bd7906",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -1412,7 +1425,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("f9720e32-fe1e-4db1-9b29-c2038a938b29"),
+                            Id = "bab978e9-0bba-443c-b82e-bfe37439ace3",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -1425,7 +1438,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("a623774d-afc1-462f-8719-ff127ff8b0e2"),
+                            Id = "ca17f5b5-4cdc-430c-8ec1-dac60ea908ac",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -1438,7 +1451,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("dd3f407b-de6d-40e3-9517-5f3c1775b9a6"),
+                            Id = "353455c1-4fda-4090-b266-cc3905ff6c35",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -1451,7 +1464,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("3dfeaeec-5b9b-4a75-b8ba-60309d6b8c28"),
+                            Id = "4ba612ce-37ff-4980-9294-da80f205fdac",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -1464,7 +1477,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("40032199-4acc-42a6-819c-c62e1c34b40e"),
+                            Id = "ee87dffa-aa4f-4f48-a152-6fe845455f64",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -1477,7 +1490,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("c9bf18fd-2ed0-4618-96e8-ed4d2c3ac617"),
+                            Id = "6bd0d6b8-10ff-4f2e-9964-8906c6c086e6",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -1490,7 +1503,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("33af5166-fb5b-43e4-a7e2-80e4b5679077"),
+                            Id = "3da0252a-6b80-4453-b17e-ebcfe6d49031",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -1503,7 +1516,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("dd909617-f98b-47b2-8783-b0ab690dba7b"),
+                            Id = "8bf779ea-1d6a-4ddb-a9e2-ea4d55b66d88",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -1516,7 +1529,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("94590279-538a-4a8b-adbe-062cc22586f2"),
+                            Id = "c61adfea-099a-40ac-8856-d7956b27fb4c",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -1529,7 +1542,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d2e4825e-cc5c-4a16-8eee-2ef200cbf693"),
+                            Id = "64fd8d2e-b750-442f-b817-887b6b34cc16",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -1542,7 +1555,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("716b6af4-d6e1-41ba-a7d1-12c836b385d0"),
+                            Id = "3a692f54-4943-44b2-b420-1cc736dcd642",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -1555,7 +1568,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("aa0863e0-2e24-4879-9902-b9d899183037"),
+                            Id = "c5982ace-28a5-45dd-8df6-cc49706af664",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -1568,7 +1581,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("128fba97-5b17-45a1-9f6e-5390cc991b27"),
+                            Id = "75fc3897-0dd8-4f96-9f18-830183c0dbeb",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -1581,7 +1594,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("b6a06f8e-e707-47a3-845c-507443cbf0ee"),
+                            Id = "0b4aee17-393d-4756-af33-46c14e8530c0",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -1594,7 +1607,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("1aa337dc-03fe-4df0-83ad-816aab6b9915"),
+                            Id = "15433eb6-a290-4053-9559-de4f7567e8f8",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -1607,7 +1620,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("86d1e4fe-182c-4d8d-b2cd-c095fc6edc38"),
+                            Id = "b6d26b67-2a76-477b-b7d4-81f60d0ede73",
                             College = "计算机学院",
                             FirstDepartment = 7,
                             Grade = "22网络工程",
@@ -1620,7 +1633,7 @@ namespace interviewer.Migrations
                         },
                         new
                         {
-                            Id = new Guid("3193d1e8-c02b-4fe2-8342-30ef18d74940"),
+                            Id = "996e30f1-897a-41c1-8613-98484210bd2c",
                             College = "计算机学院",
                             FirstDepartment = 3,
                             Grade = "22网络工程",
@@ -1633,31 +1646,16 @@ namespace interviewer.Migrations
                         });
                 });
 
-            modelBuilder.Entity("interviewer.Data.StudentAccount", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("StudentAccounts");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.HasOne("interviewer.Data.InterviewerUser", null)
                         .WithMany()
@@ -1666,7 +1664,7 @@ namespace interviewer.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.HasOne("interviewer.Data.InterviewerUser", null)
                         .WithMany()
@@ -1675,9 +1673,9 @@ namespace interviewer.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1690,7 +1688,7 @@ namespace interviewer.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.HasOne("interviewer.Data.InterviewerUser", null)
                         .WithMany()
