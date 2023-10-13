@@ -2,8 +2,9 @@ namespace interviewer.Data;
 
 public enum ProcessState
 {
-    FirstRoundInterview = 0,
-    WrittenTest = 1,
-    SecondRoundInterview = 2,
-    Finish = 3
+    Applying = 0,
+    FirstRoundInterview = 1,
+    WrittenTest = 2,
+    SecondRoundInterview = 3,
+    Finish = 4
 }

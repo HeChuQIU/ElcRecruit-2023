@@ -17,10 +17,8 @@ try
 
     var builder = WebApplication.CreateBuilder(args);
 
-    builder.Services.AddCors(options => options.AddPolicy("CorsPolicy", policyBuilder =>
-    {
-        policyBuilder.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
-    }));
+    builder.Services.AddCors(options => options.AddPolicy("CorsPolicy",
+        policyBuilder => { policyBuilder.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin(); }));
 
     builder.Services.AddHttpClient();
 
@@ -28,15 +26,17 @@ try
     builder.Services.AddRazorPages();
 
     builder.Services.AddDbContext<InterviewerDbContext>();
-    builder.Services.AddIdentityCore<InterviewerUser>().AddRoles<IdentityRole>().AddSignInManager().AddEntityFrameworkStores<InterviewerDbContext>();
+    builder.Services.AddIdentityCore<InterviewerUser>().AddRoles<IdentityRole>().AddSignInManager()
+        .AddEntityFrameworkStores<InterviewerDbContext>()
+        /*.AddTokenProvider("Default", typeof(InterviewerTwoFactorAuthentication))*/;
 
     var jwtSettings = builder.Configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>();
     if (jwtSettings is null)
         throw new Exception("JwtSettings is null");
     builder.Services.AddSingleton(jwtSettings);
-    
+
     var messageSettings = builder.Configuration.GetSection(nameof(MessageSettings)).Get<MessageSettings>();
-    if(messageSettings is null)
+    if (messageSettings is null)
         throw new Exception("MessageSettings is null");
 
     builder.Services.AddSingleton(messageSettings);
@@ -47,6 +47,7 @@ try
 
     //TODO: 非测试环境下更改！！
     builder.Services.AddScoped<IMessageService, FakeMessageService>();
+    // builder.Services.AddScoped<IMessageService, MessageService>();
 
     var tokenValidationParameters = new TokenValidationParameters
     {
@@ -58,11 +59,11 @@ try
     };
 
     builder.Services.AddAuthentication(options =>
-    {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    })
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
         .AddJwtBearer(options => { options.TokenValidationParameters = tokenValidationParameters; });
 
     builder.Services.AddEndpointsApiExplorer();
@@ -84,19 +85,19 @@ try
             Scheme = "Bearer"
         });
         c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
         {
-            new OpenApiSecurityScheme
             {
-                Reference = new OpenApiReference
+                new OpenApiSecurityScheme
                 {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            Array.Empty<string>()
-        }
-    });
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                Array.Empty<string>()
+            }
+        });
     });
 
     builder.Host.UseSerilog();

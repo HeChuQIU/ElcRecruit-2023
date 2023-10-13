@@ -5,7 +5,6 @@ using interviewer.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using StackExchange.Redis;
 
 namespace interviewer.Controllers;
 
@@ -19,14 +18,12 @@ public class MiniProgramController : ControllerBase
         _userManager = userManager;
         _messageService = messageService;
         _dbContext = new InterviewerDbContext(configuration);
-        _random = new Random();
     }
 
     private readonly IConfiguration _configuration;
     private readonly UserManager<InterviewerUser> _userManager;
     private readonly IMessageService _messageService;
     private readonly InterviewerDbContext _dbContext;
-    private readonly Random _random;
 
     [HttpPost("commit")]
     [Authorize(Roles = "Student")]
@@ -86,22 +83,25 @@ public class MiniProgramController : ControllerBase
     public async Task<MiniProgramControllerResult> GetProcess()
     {
         var user = await _userManager.GetUserAsync(User);
-        var student = _dbContext.Students.FirstOrDefault(s => s.Id == user.Id);
+        if (user is null) 
+            return new MiniProgramControllerResult { ErrorMessages = new[] { "用户不存在" } };
+        var student = _dbContext.Students.First(s => s.Id == user.Id);
         var studentHistories = _dbContext.StudentHistories.Where(history => history.StudentId == student.Id).OrderBy(history => history.ProcessState).ToList();
-        studentHistories.Add(new StudentHistory()
+        studentHistories.Add(new StudentHistory
         {
             ProcessState = (ProcessState)GetProcessState(),
             StudentId = student.Id,
             Time = DateTime.UtcNow,
             State = student.State,
-            Id = Guid.NewGuid().ToString()
+            Id = Guid.NewGuid().ToString(),
+            Department = student.FirstDepartment
         });
         if (!studentHistories.Any())
         {
-            return new MiniProgramControllerResult() { ErrorMessages = new[] { "没有记录！" } };
+            return new MiniProgramControllerResult { ErrorMessages = new[] { "没有记录！" } };
         }
 
-        return new MiniProgramControllerResult() { Data = studentHistories.ToArray() };
+        return new MiniProgramControllerResult { Data = studentHistories.ToArray() };
     }
 
     [HttpGet("checkin")]
@@ -109,14 +109,21 @@ public class MiniProgramController : ControllerBase
     public async Task<MiniProgramControllerResult> CheckIn()
     {
         var user = await _userManager.GetUserAsync(User);
-        if (user is null) return new MiniProgramControllerResult() { Data = null, ErrorMessages = new[] { "用户不存在" } };
+        if (user is null) return new MiniProgramControllerResult { Data = null, ErrorMessages = new[] { "用户不存在" } };
         var student = _dbContext.Students.FirstOrDefault(s => s.Id == user.Id);
         if (student is null)
-            return new MiniProgramControllerResult() { Data = null, ErrorMessages = new[] { "用户不存在" } };
+            return new MiniProgramControllerResult { Data = null, ErrorMessages = new[] { "用户不存在" } };
         student.State = StudentState.CheckedIn;
         _dbContext.Students.Update(student);
         await _dbContext.SaveChangesAsync();
-        return new MiniProgramControllerResult() { Data = student?.State };
+        return new MiniProgramControllerResult { Data = student?.State };
+    }
+    
+    [HttpGet("is_logined")]
+    [Authorize(Roles = "Student")]
+    public IActionResult IsLogined()
+    {
+        return Ok(new Result());
     }
 
     [HttpGet("send_verification_code")]
@@ -125,14 +132,8 @@ public class MiniProgramController : ControllerBase
             ErrorMessage = "手机号格式不正确")]
         string phoneNumber)
     {
+        // return Ok("FUCK");
         return Ok(await _messageService.SendVerificationCode(phoneNumber));
-    }
-
-    string RandomNumber(int length)
-    {
-        const string chars = "0123456789";
-        return new string(Enumerable.Repeat(chars, length)
-            .Select(s => s[_random.Next(s.Length)]).ToArray());
     }
     
     private int GetProcessState()

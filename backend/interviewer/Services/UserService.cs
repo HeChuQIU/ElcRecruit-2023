@@ -9,6 +9,7 @@ using System.Text;
 using interviewer.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.IdentityModel.Tokens;
@@ -24,14 +25,19 @@ namespace interviewer.Services
         private readonly SignInManager<InterviewerUser> _signInManager;
         private readonly IConfiguration _configuration;
         private readonly InterviewerDbContext _dbContext;
+        private readonly IUserStore<InterviewerUser> _store;
+        private readonly IPasswordHasher<InterviewerUser> _passwordHasher;
 
         public UserService(JwtSettings jwtSettings, UserManager<InterviewerUser> userManager,
-            SignInManager<InterviewerUser> signInManager, IConfiguration configuration)
+            SignInManager<InterviewerUser> signInManager, IConfiguration configuration,
+            IUserStore<InterviewerUser> store, IPasswordHasher<InterviewerUser> passwordHasher)
         {
             _jwtSettings = jwtSettings;
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
+            _store = store;
+            _passwordHasher = passwordHasher;
             _dbContext = new InterviewerDbContext(_configuration);
         }
 
@@ -42,7 +48,7 @@ namespace interviewer.Services
             {
                 return new TokenResult
                 {
-                    ErrorMessages = new[] { "用户已存在" }, 
+                    ErrorMessages = new[] { "用户已存在" },
                 };
             }
 
@@ -181,18 +187,17 @@ namespace interviewer.Services
                 };
             }
 
-            string token = await _userManager.GeneratePasswordResetTokenAsync(existingUser);
-            IdentityResult resetPasswordResult =
-                await _userManager.ResetPasswordAsync(existingUser, token, newPassword);
-
-            if (!resetPasswordResult.Succeeded)
+            existingUser.PasswordHash = _passwordHasher.HashPassword(existingUser, newPassword);
+            var identityResult = await _userManager.UpdateAsync(existingUser);
+            
+            if (!identityResult.Succeeded)
             {
                 return new EditResult
                 {
-                    ErrorMessages = resetPasswordResult.Errors.Select(p => p.Description).ToArray()
+                    ErrorMessages = identityResult.Errors.Select(p => p.Description).ToArray()
                 };
             }
-
+            
             return new EditResult();
         }
 
@@ -265,7 +270,7 @@ namespace interviewer.Services
             return new EditResult();
         }
 
-        private TokenResult GenerateJwtToken(InterviewerUser user)
+        private string GenerateToken(InterviewerUser user)
         {
             var key = Encoding.ASCII.GetBytes(_jwtSettings.SecurityKey);
             var roleClaims = new List<Claim>();
@@ -290,6 +295,12 @@ namespace interviewer.Services
             var jwtTokenHandler = new JwtSecurityTokenHandler();
             var securityToken = jwtTokenHandler.CreateToken(tokenDescriptor);
             var token = jwtTokenHandler.WriteToken(securityToken);
+            return token;
+        }
+
+        private TokenResult GenerateJwtToken(InterviewerUser user)
+        {
+            var token = GenerateToken(user);
             return new TokenResult
             {
                 AccessToken = token,

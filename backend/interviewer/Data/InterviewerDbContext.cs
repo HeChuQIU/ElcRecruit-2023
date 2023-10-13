@@ -70,17 +70,17 @@ public class InterviewerDbContext : IdentityDbContext<InterviewerUser>
 
         modelBuilder.Entity<Student>().HasData(students);
 
-        if (await UserManager.FindByNameAsync("admin") is null)
-        {
-            InterviewerUser user = new InterviewerUser()
-            {
-                Id = new Guid().ToString(),
-                UserName = "admin",
-            };
-            await UserManager.CreateAsync(user, "@Admin");
-
-            await UserManager.AddToRoleAsync(user, "Admin");
-        }
+        // if (await UserManager.FindByNameAsync("admin") is null)
+        // {
+        //     InterviewerUser user = new InterviewerUser()
+        //     {
+        //         Id = new Guid().ToString(),
+        //         UserName = "admin",
+        //     };
+        //     await UserManager.CreateAsync(user, "@Admin");
+        //
+        //     await UserManager.AddToRoleAsync(user, "Admin");
+        // }
 
         string RandomString(int length)
         {
@@ -97,6 +97,6 @@ public class InterviewerDbContext : IdentityDbContext<InterviewerUser>
         }
 
         modelBuilder.Entity<IntegerProperty>().HasData(new IntegerProperty()
-            { Name = "ProcessState", Value = (int)ProcessState.FirstRoundInterview });
+            { Name = "ProcessState", Value = (int)ProcessState.Applying });
     }
 }

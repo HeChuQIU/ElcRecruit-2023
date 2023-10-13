@@ -180,7 +180,7 @@ namespace interviewer.Controllers
         {
             if (!await _messageService.VerifyCode(phoneNumber, code))
             {
-                return Ok(new FailedResult()
+                return Ok(new FailedResult
                 {
                     ErrorMessages = new[] { "验证码错误" }
                 });

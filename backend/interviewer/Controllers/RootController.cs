@@ -38,13 +38,13 @@ public class RootController : ControllerBase
 
     [HttpGet("ex_access")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> Export(StudentState studentState, ElcDepartment department)
+    public async Task<IActionResult> Export(StudentState? studentState, ElcDepartment? department)
     {
         Student[]? data;
         try
         {
             data = await _dbContext.Students.Where(s =>
-                    s.State == studentState && (department == ElcDepartment.All || s.FirstDepartment == department))
+                    (studentState == null || s.State == studentState) && (department == null||department == ElcDepartment.All || s.FirstDepartment == department))
                 .ToArrayAsync();
         }
         catch (Exception e)
@@ -93,14 +93,14 @@ public class RootController : ControllerBase
         if (!force)
         {
             Dictionary<StudentState, int> unexpectedStateCount = stateDict
-                .Where(pair => pair.Key is not (StudentState.Applied or StudentState.Failed))
+                .Where(pair => pair.Key is not (StudentState.Pass or StudentState.Failed))
                 .ToDictionary(pair => pair.Key, pair => pair.Value);
 
             if (unexpectedStateCount.Any())
             {
                 var errorMessage = unexpectedStateCount.Aggregate("当前还有",
                     (s, pair) => pair.Key == 0 ? s : $"{s} {pair.Value} 个学生为 {pair.Key} 状态，");
-                errorMessage = (string)errorMessage.TrimEnd('，').Append('。');
+                errorMessage = errorMessage.TrimEnd('，');
                 return new
                 {
                     Success = false,
@@ -138,7 +138,7 @@ public class RootController : ControllerBase
     {
         int processState = GetProcessState();
 
-        if (processState == (int)ProcessState.FirstRoundInterview)
+        if (processState == (int)ProcessState.Applying)
             return new
             {
                 Success = false,
@@ -154,6 +154,8 @@ public class RootController : ControllerBase
                 student.State = history.State;
                 student.FirstDepartment = history.Department;
             }
+
+            _dbContext.StudentHistories.Remove(history);
         }
 
         SetProcessState(processState - 1);
